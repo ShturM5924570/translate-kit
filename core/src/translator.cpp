@@ -82,8 +82,9 @@ std::shared_ptr<marian::Options> BuildOptions(const ModelSpec& spec) {
     options->set("vocabs", vocabs);
 
     // shortlist: [<lex file>, <check flag>]
-    options->set("shortlist", std::vector<std::string>{spec.shortlist_path, "false"});
-
+    if (!spec.shortlist_path.empty()) {
+        options->set("shortlist", std::vector<std::string>{spec.shortlist_path, "false"});
+    }
     // Bergamot runtime keys the engine requires but a raw marian config lacks
     // (normally injected off-device by patch-marian-for-bergamot.py; SPEC-1 §10a).
     // marian's parser DECLARES these with defaults (so `has()` is always true and
